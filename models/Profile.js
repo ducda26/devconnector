@@ -1,8 +1,8 @@
-const mongooge = require('mongoose');
+const mongoose = require('mongoose');
 
-const ProfileSchema = new mongooge.Schema({
+const ProfileSchema = new mongoose.Schema({
     user: {
-        type: mongooge.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'user'
     },
     company: {

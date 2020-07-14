@@ -5,13 +5,15 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken')
 const config = require('config')
 const { check, validationResult } = require('express-validator');
-//@route POST api/users
-//@desc register route
-//@accsess Public
+
+
 
 // Load User model
 const User = require('../../models/User');
 
+//@route POST api/users
+//@desc register route
+//@accsess Public
 
 router.post(
     '/',

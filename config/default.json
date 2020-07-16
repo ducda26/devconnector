@@ -1,4 +1,6 @@
 {
     "mongoURI":"mongodb+srv://anhduc26:anhduc26@anhduc-devconnector.tx4zf.mongodb.net/<dbname>?retryWrites=true&w=majority",
-    "jwtSecret": "mysecrettoken"
+    "jwtSecret": "mysecrettoken",
+    "githubClientId":"dcf287d1a5633d45710d",
+    "githubSecret":"aa9bcfbe1c57576bacb02d3f797acdfbb602dc86"
 }

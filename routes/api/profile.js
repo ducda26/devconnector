@@ -222,6 +222,7 @@ router.put(
             profile.experience.unshift(newExp);
 
             await profile.save()
+            res.json(profile);
         } catch (err) {
             console.error(err.message);
             res.status(500).send('Server Error');
@@ -313,6 +314,9 @@ router.put(
             profile.education.unshift(newEdu);
 
             await profile.save()
+            
+            res.json(profile);
+
         } catch (err) {
             console.error(err.message);
             res.status(500).send('Server Error');

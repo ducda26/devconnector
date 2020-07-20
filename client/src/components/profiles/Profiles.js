@@ -9,7 +9,7 @@ import {getProfiles} from '../../actions/profile'
 const Profiles = ({ getProfiles, profile: { profiles, loading } }) => {
     useEffect(() => {
         getProfiles();
-    }, []);
+    }, [getProfiles]);
 
     return (
         <Fragment>
@@ -35,16 +35,19 @@ const Profiles = ({ getProfiles, profile: { profiles, loading } }) => {
           )}
         </Fragment>
       );
-
 }
+
 
 Profiles.propTypes = {
-    getProfiles: PropTypes.func.isRequired,
-    profile: PropTypes.object.isRequired
-}
+  getProfiles: PropTypes.func.isRequired,
+  profile: PropTypes.object.isRequired
+};
 
 const mapStateToProps = state => ({
-    profile: state.profile
-})
+  profile: state.profile
+});
 
-export default connect(mapStateToProps, { getProfiles })(Profiles)
+export default connect(
+  mapStateToProps,
+  { getProfiles }
+)(Profiles);

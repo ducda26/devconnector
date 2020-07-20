@@ -1,11 +1,15 @@
-import React, { useState, Fragment } from 'react';
-import {Link, withRouter} from 'react-router-dom';
+import React, { useEffect, useState, Fragment } from 'react';
+import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import {createProfile} from '../../actions/profile';
+import { createProfile, getCurrentProfile } from '../../actions/profile';
 
 
-const CreateProfile = ({createProfile, history}) => {
+const EditProfile = ({
+    profile: { profile, loading },
+    createProfile,
+    getCurrentProfile,
+    history }) => {
     const [formData, setFormData] = useState({
         company: '',
         website: '',
@@ -22,6 +26,27 @@ const CreateProfile = ({createProfile, history}) => {
     })
 
     const [displaySocialInputs, toggleSocialInputs] = useState(false);
+
+    useEffect(() => {
+        getCurrentProfile();
+
+        setFormData({
+            company: loading || !profile.company ? '' : profile.company,
+            youtube: loading || !profile.youtube ? '' : profile.company,
+            website: loading || !profile.website ? '' : profile.website,
+            location: loading || !profile.location ? '' : profile.location,
+            status: loading || !profile.status ? '' : profile.status,
+            skills: loading || !profile.skills ? '' : profile.skills.join(','),
+            bio: loading || !profile.bio ? '' : profile.bio,
+            githubusername: loading || !profile.githubusername ? '' : profile.githubusername,
+            twitter: loading || !profile.twitter ? '' : profile.twitter,
+            facebook: loading || !profile.facebook ? '' : profile.facebook,
+            linkedin: loading || !profile.linkedin ? '' : profile.linkedin,
+            youtube: loading || !profile.youtube ? '' : profile.youtube,
+            instagram: loading || !profile.instagram ? '' : profile.instagram
+        });
+    }, [loading])
+
     const {
         company,
         website,
@@ -37,11 +62,11 @@ const CreateProfile = ({createProfile, history}) => {
         instagram
     } = formData
 
-    const onChange = e => setFormData({...formData, [e.target.name]: e.target.value})
+    const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value })
 
     const onSubmit = e => {
         e.preventDefault();
-        createProfile(formData, history)
+        createProfile(formData, history, true)
     }
 
     return (
@@ -72,25 +97,25 @@ const CreateProfile = ({createProfile, history}) => {
                     >
                 </div>
                 <div className="form-group">
-                    <input type="text" placeholder="Company" name="company" value={company} onChange={e => onChange(e)}/>
+                    <input type="text" placeholder="Company" name="company" value={company} onChange={e => onChange(e)} />
                     <small className="form-text"
                     >Could be your own company or one you work for</small
                     >
                 </div>
                 <div className="form-group">
-                    <input type="text" placeholder="Website" name="website" value={website} onChange={e => onChange(e)}/>
+                    <input type="text" placeholder="Website" name="website" value={website} onChange={e => onChange(e)} />
                     <small className="form-text"
                     >Could be your own or a company website</small
                     >
                 </div>
                 <div className="form-group">
-                    <input type="text" placeholder="Location" name="location" value={location} onChange={e => onChange(e)}/>
+                    <input type="text" placeholder="Location" name="location" value={location} onChange={e => onChange(e)} />
                     <small className="form-text"
                     >City & state suggested (eg. Boston, MA)</small
                     >
                 </div>
                 <div className="form-group">
-                    <input type="text" placeholder="* Skills" name="skills" value={skills} onChange={e => onChange(e)}/>
+                    <input type="text" placeholder="* Skills" name="skills" value={skills} onChange={e => onChange(e)} />
                     <small className="form-text"
                     >Please use comma separated values (eg.
             HTML,CSS,JavaScript,PHP)</small
@@ -125,27 +150,27 @@ const CreateProfile = ({createProfile, history}) => {
 
                     <div className="form-group social-input">
                         <i className="fab fa-twitter fa-2x"></i>
-                        <input type="text" placeholder="Twitter URL" name="twitter" value={twitter} onChange={e => onChange(e)}/>
+                        <input type="text" placeholder="Twitter URL" name="twitter" value={twitter} onChange={e => onChange(e)} />
                     </div>
 
                     <div className="form-group social-input">
                         <i className="fab fa-facebook fa-2x"></i>
-                        <input type="text" placeholder="Facebook URL" name="facebook" value={facebook} onChange={e => onChange(e)}/>
+                        <input type="text" placeholder="Facebook URL" name="facebook" value={facebook} onChange={e => onChange(e)} />
                     </div>
 
                     <div className="form-group social-input">
                         <i className="fab fa-youtube fa-2x"></i>
-                        <input type="text" placeholder="YouTube URL" name="youtube" value={youtube} onChange={e => onChange(e)}/>
+                        <input type="text" placeholder="YouTube URL" name="youtube" value={youtube} onChange={e => onChange(e)} />
                     </div>
 
                     <div className="form-group social-input">
                         <i className="fab fa-linkedin fa-2x"></i>
-                        <input type="text" placeholder="Linkedin URL" name="linkedin" value={linkedin} onChange={e => onChange(e)}/>
+                        <input type="text" placeholder="Linkedin URL" name="linkedin" value={linkedin} onChange={e => onChange(e)} />
                     </div>
 
                     <div className="form-group social-input">
                         <i className="fab fa-instagram fa-2x"></i>
-                        <input type="text" placeholder="Instagram URL" name="instagram" value={instagram} onChange={e => onChange(e)}/>
+                        <input type="text" placeholder="Instagram URL" name="instagram" value={instagram} onChange={e => onChange(e)} />
                     </div>
                 </Fragment>}
 
@@ -156,9 +181,17 @@ const CreateProfile = ({createProfile, history}) => {
     )
 }
 
-CreateProfile.propTypes = {
-    createProfile: PropTypes.func.isRequired
+EditProfile.propTypes = {
+    createProfile: PropTypes.func.isRequired,
+    getCurrentProfile: PropTypes.func.isRequired,
+    profile: PropTypes.object.isRequired
 }
 
+const mapStateToProps = state => ({
+    profile: state.profile
+})
 
-export default connect(null, {createProfile}) (withRouter(CreateProfile))
+export default connect(
+    mapStateToProps, 
+    { createProfile, getCurrentProfile }
+    )(withRouter(EditProfile));
